@@ -1,0 +1,23 @@
+/* styles.css */
+.notifications-container {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 8px;    /* Rounded corners */
+    max-width: 500px;      /* Optional: Limit width */
+    background-color: #f9f9f9; /* Optional: Add a background */
+}
+
+ul {
+    list-style: none; /* Remove default bullet points */
+    padding: 0;       /* Remove padding */
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px solid #ddd; /* Add a border between items */
+}
+
+li:last-child {
+    border-bottom: none; /* Remove border for the last item */
+}
