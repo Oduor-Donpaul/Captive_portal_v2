@@ -14,7 +14,7 @@ const GenerateOtp = () => {
 
     const getOtp = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/mpesa-callback', 
+            const response = await axios.post('http://127.0.0.1:8000/api/callback', 
                 {
                     PhoneNumber: PhoneNumber
                 }

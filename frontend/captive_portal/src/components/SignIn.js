@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 
 const SignIn = () => {
@@ -20,9 +21,11 @@ const SignIn = () => {
         setPassword(e.target.value)
     }
 
+    const access_token = localStorage.getItem('authToken')
+
     const handleSignIn = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/admin/login', {
+            const response = await axios.post('http://127.0.0.1:8000/admin/login', {
                 email: email,
                 password: password                
             });
@@ -45,6 +48,7 @@ const SignIn = () => {
         }
 
     }
+    
 
     return (
         <div style={{textAlign: 'center'}}>
@@ -88,6 +92,7 @@ const SignIn = () => {
                     }}
                 />
                 <br></br>
+
                 <Button onClick={handleSignIn}>Sign In</Button>
             </div>
         </div>

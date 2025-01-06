@@ -1,10 +1,11 @@
 /* styles.css */
 .notifications-container {
+
     margin: 20px auto;
     padding: 10px;
     border: 1px solid #ddd; /* Light gray border */
     border-radius: 8px;    /* Rounded corners */
-    max-width: 500px;      /* Optional: Limit width */
+    max-width: 90%;      /* Optional: Limit width */
     background-color: #f9f9f9; /* Optional: Add a background */
 }
 

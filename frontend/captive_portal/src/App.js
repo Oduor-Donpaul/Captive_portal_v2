@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { io } from 'socket.io-client';
 import OtpSearch from './pages/OtpSearch';
@@ -8,22 +8,21 @@ import AdminNavbar from './components/AdminNavbar';
 import Home from './pages/Home';
 import Notifications from './pages/Notifications';
 import GenerateOtp from './pages/GenerateOtp';
-import AppNavbar from './components/AppNavbar';
+import GeneralNavbar from './components/GeneralNavbar';
 import GuestHome from './pages/GuestHome';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import SignIn from './components/SignIn';
 import ListOtps from './pages/Otps';
 import ProtectedRoute from './components/ProtectedRoute';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SignOut from './components/SignOut';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 function App() {
-  const [admin, setAdmin] = useState(true);
-
 
   //Establish socketio connection to the server
-  var socket = io('http://localhost:5000', {
-    transports: ['polling']
+  var socket = io('http://127.0.0.1:8000', {
+    transports: ['websocket', 'polling']
 });
 
 
@@ -33,9 +32,9 @@ function App() {
   })
   return (
     <Router>
-      {admin ? <AdminNavbar /> : <AppNavbar />}
+      <GeneralNavbar />
       <div>
-        {admin ?
+        
           <Routes>
             <Route path='/admin' element={<Home />} />
             
@@ -60,16 +59,17 @@ function App() {
                 </ProtectedRoute>
               } />
               <Route path='/admin/signin' element={<SignIn />} />
+              <Route path='/admin/signout' element={<SignOut />} />
             
 
             <Route path='/admin/login' element={<LogIn />} />
           </Routes>
-          :
+          
           <Routes>
             <Route path='/' element={<GuestHome />} />
             <Route path='/login' element={<LogIn />} />
         </Routes>
-        }
+        
       </div>
     </Router>
   );

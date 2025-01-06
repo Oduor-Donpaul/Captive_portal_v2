@@ -10,14 +10,69 @@ from dotenv import load_dotenv
 import os
 import traceback
 from flask_cors import cross_origin
+import requests
+from datetime import datetime
+import base64
+from requests.auth import HTTPBasicAuth
 
 load_dotenv()
 bp = Blueprint("main", __name__)
 auth_blueprint = Blueprint('auth', __name__)
 
-RADIUS_SERVER=os.getenv("RADIUS_SERVER")
-RADIUS_SECRET=b"the-first"
-RADIUS_PORT=os.getenv("RADIUS_PORT")
+# Daraja API credentials
+CONSUMER_KEY = 'tYYG5z6Cd8ZrcDJNCQwpZGWksKCbRll7nPYge3qVSFL6yPuh'
+CONSUMER_SECRET = 'A3ilxtYpAUCrjnni2pBGVGC5wcwxeWCeGv4R9pug27ebHfI14zpvi55AWVUm5cXg'
+BUSINESS_SHORT_CODE = '174379'
+PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+
+def get_access_token():
+    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    response = requests.get(url, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET))
+    return response.json()['access_token']
+
+def get_timestamp():
+    return datetime.now().strftime('%Y%m%d%H%M%S')
+
+def generate_password():
+    timestamp = get_timestamp()
+    data_to_encode = f"{BUSINESS_SHORT_CODE}{PASSKEY}{timestamp}"
+    return base64.b64encode(data_to_encode.encode())
+
+#mpesa payment route
+#@auth_blueprint.route('/loginin', methods=['POST'])
+@bp.route('/api/payment', methods=['POST'])
+def initiate_payment():
+    data = request.json
+    phone_number = data.get('phone_number')
+    amount = data.get('amount')
+
+    if not phone_number or not amount:
+        return jsonify({'error': 'phone_number and amount required'})
+    
+    access_token = get_access_token()
+
+    print(f" access token {access_token}")
+
+    url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+
+    headers = {"Authorization":f"Bearer {access_token}"}
+    payload = {
+        "BusinessShortCode": BUSINESS_SHORT_CODE,
+        "Password": generate_password(),
+        "Timestamp": get_timestamp(),
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone_number,
+        "PartyB": BUSINESS_SHORT_CODE,
+        "PhoneNumber": phone_number,
+        "CallBackURL": "https://0fc8-91-102-180-52.ngrok-free.app/api/callback",
+        "AccountReference": "Techpoint",
+        "TransactionDesc": "Payment for internet access"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
+
 
 
 #checks authorization
@@ -122,6 +177,7 @@ def get_otps():
     try:
         page = int(request.args.get('page', 1))
         page_size = int(request.args.get('page_size', 10))
+        print(f"page {page} page_size {page_size}")
 
         #fetch data
         query = OTP.query.order_by(OTP.created_at.desc())
@@ -163,7 +219,7 @@ def get_otp():
 
 
 #Route for mpesa callback to generate and send OTP
-@bp.route('/mpesa-callback', methods=['POST'])
+@bp.route('/api/callback', methods=['POST'])
 def mpesa_callback():
     data = request.json
     phone_number = data.get('PhoneNumber')

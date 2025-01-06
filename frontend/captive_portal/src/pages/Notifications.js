@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
-
-const socket = io("http://127.0.0.1:5000");
+  
+var socket = io('http://127.0.0.1:8000', {
+    transports: ['websocket'],
+    reconnection: true
+});
 
 const Notifications = () => {
 
@@ -22,7 +25,7 @@ const Notifications = () => {
     }, []);
 
     return (
-        <div style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center', width: '90%'}}>
             <h2>Notifications</h2>
             {otpList.map((item, index) => (
                 <li style={{listStyleType: 'none', borderWidth: '2px', borderColor: 'blue'}} key={index}>

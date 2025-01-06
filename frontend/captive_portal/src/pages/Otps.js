@@ -12,25 +12,25 @@ const ListOtps = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchOtps(page, pageSize);
-    }, [page])
-
-    const fetchOtps = async (page, pageSize) => {
-        setLoading(true);
-
-        try {
-            const response = await axios.get("http://127.0.0.1:5000/admin/get-otps", {
-                params: { page, page_size: pageSize }
-            });
-            setOtpList(response.data.data)
-            setTotal(total)
         
-        } catch (error) {
-            console.error('Error fetchimg data:', error)
-        } finally {
-            setLoading(false)
-        };
-    };
+        const interval = setInterval(() => {
+            fetch(`http://127.0.0.1:8000/admin/get-otps?page=${page}&page_size=${pageSize}`)
+            .then(response => response.json())
+            .then(data => {
+                
+                    console.log(data.total)
+
+                    setOtpList(data.data);
+
+                    setTotal(data.total)
+            })
+            .catch(error => console.error('Error fetching otp:', error))
+        }, 5000);
+
+        return () => clearInterval(interval) //cleanup on unmount
+
+    }, [page, pageSize])
+
 
     const handleNextPage = () => {
         if (page * pageSize < total) {
@@ -45,7 +45,7 @@ const ListOtps = () => {
     };
 
     return (
-        <div style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center', width: '90%'}}>
             <h2><b>OTPs</b></h2>
             <div className="notifications-container" >
                 {loading ? (
