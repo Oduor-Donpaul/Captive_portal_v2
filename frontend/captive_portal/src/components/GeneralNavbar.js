@@ -10,8 +10,6 @@ const GeneralNavbar = () => {
 	useEffect(() => {
 		const isAdmin = location.pathname.includes("admin");
 		setAdmin(isAdmin);
-
-		console.log(isAdmin)
 	}, [location.pathname])
 
 	return (

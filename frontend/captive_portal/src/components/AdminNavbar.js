@@ -9,7 +9,7 @@ const AdminNavbar = () => {
     <div >
       <Navbar bg='dark' variant='dark' expand='lg' sticky='top'>
         <Container>
-          <Navbar.Brand href='/'>Techpoint</Navbar.Brand>
+          <Navbar.Brand href='/admin'>Techpoint</Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='me-auto'>

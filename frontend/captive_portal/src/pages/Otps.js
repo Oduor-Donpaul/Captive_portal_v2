@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
 import { Button } from "react-bootstrap";
 import './styles/styles.css'
 
@@ -9,7 +8,6 @@ const ListOtps = () => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         
@@ -17,8 +15,6 @@ const ListOtps = () => {
             fetch(`http://127.0.0.1:8000/admin/get-otps?page=${page}&page_size=${pageSize}`)
             .then(response => response.json())
             .then(data => {
-                
-                    console.log(data.total)
 
                     setOtpList(data.data);
 
@@ -48,9 +44,6 @@ const ListOtps = () => {
         <div style={{textAlign: 'center', width: '90%'}}>
             <h2><b>OTPs</b></h2>
             <div className="notifications-container" >
-                {loading ? (
-                    <p>Loading...</p>
-                ) : (
                     <ul>
                     {otpList.map((item, index) => (
                         <li key={index}>
@@ -58,7 +51,6 @@ const ListOtps = () => {
                         </li>
                     ))}
                     </ul>
-                )}
             </div>
             <div>
                 <Button onClick={handlePrevPage} disabled={page===1}>

@@ -35,7 +35,7 @@ const SignIn = () => {
             localStorage.setItem('authToken', access_token)
 
             setMessage('Login successful')
-            alert(message)
+            alert('Login successful')
 
             const redirectTo = location.state?.from?.pathname || '/admin/'
             navigate(redirectTo, {replace: true})

@@ -13,7 +13,7 @@ const Notifications = () => {
     useEffect(() => {
         //Register the web socket
         socket.on("otp_generated", (data) => {
-            console.log("recieved data", data)
+           
             setOtpList((prevList) => [
                 ...prevList,
                 {PhoneNumber: data.PhoneNumber, otp: data.otp_code},
