@@ -52,32 +52,32 @@ M-Pesa Daraja API access
 
 1. Clone the repository:
     
-<pre> ```bash git clone https://github.com/yourusername/captive-portal-project.git 
-cd captive-portal-project/backend ``` </pre>
+<pre> bash git clone https://github.com/yourusername/captive-portal-project.git 
+cd captive-portal-project/backend  </pre>
 
 2. Create and activate a virtual environment:
 
-<pre> ```bash python3 -m venv venv
-source venv/bin/activate``` </pre>
+<pre> bash python3 -m venv venv
+source venv/bin/activate </pre>
 
 3. Install dependencies:
 
-<pre> ```bash pip install -r requirements.txt ``` </pre>
+<pre> bash pip install -r requirements.txt  </pre>
 
 4. Set up environment variables in .env:
 
-<pre> ```SECRET_KEY=your_secret_key
+<pre> SECRET_KEY=your_secret_key
 DATABASE_URI=sqlite:///captive_portal.db
 MPESA_CONSUMER_KEY=your_consumer_key
-MPESA_CONSUMER_SECRET=your_consumer_secret ``` </pre>
+MPESA_CONSUMER_SECRET=your_consumer_secret  </pre>
 
 5. Run database migrations:
 
-<pre> ``` flask db upgrade ``` </pre>
+<pre> flask db upgrade </pre>
 
 6. Start the backend server:
 
-<pre> ``` flask run ``` </pre>
+<pre> flask run </pre>
 
 ## RabbitMQ Setup
 
@@ -85,17 +85,17 @@ MPESA_CONSUMER_SECRET=your_consumer_secret ``` </pre>
 
 8. Start RabbitMQ:
    
-   <pre> ``` sudo systemctl start rabbitmq-server ``` </pre>
+   <pre> sudo systemctl start rabbitmq-server </pre>
 
 ## Frontend Setup
 
 9. Navigate to the frontend directory:
 
-<pre> ``` cd ../frontend ``` </pre>
+<pre> cd ../frontend </pre>
 
 10. Install dependencies:
 
-<pre> ``` npm install ``` </pre>
+<pre> npm install </pre>
 
 11. Start the frontend development server
 
