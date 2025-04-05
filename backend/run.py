@@ -16,4 +16,4 @@ if __name__ == '__main__':
 
 	start_rabbitmq_consumer_thread()
 	#run the app in debug mode
-	socketio.run(app, host='127.0.0.1', port=8000, debug=True)
+	socketio.run(app, host='0.0.0.0', port=8000, debug=True)
