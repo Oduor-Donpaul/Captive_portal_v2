@@ -9,6 +9,7 @@ from app.models import  Message
 from socket import timeout as SocketTimeOut
 import time
 from socket import timeout as SocketTimeout
+import pika
 
 app = create_app()
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3000"]}})
@@ -20,7 +21,7 @@ def handle_connect():
     print("Client connected")
 
 #Create delay for rabbitmq to sttart up
-def wait_for_rabbitmq(url, timeout=180):
+def wait_for_rabbitmq(url, timeout=30):
     for i in range(timeout):
         try:
             with Connection(url) as conn:
@@ -39,21 +40,29 @@ def publish_otp(otp, phone_number):
     message = json.dumps({'otp': otp, 'phone_number': phone_number})
 
     # Use the correct RabbitMQ host (e.g., 'rabbitmq' if in Docker)
-    amqp_url = 'amqp://guest:guest@rabbitmq:5672//'
+    amqp_url = "amqp://localhost:5672/"
 
     # Wait until RabbitMQ is available
-    wait_for_rabbitmq(amqp_url)
+    #wait_for_rabbitmq(amqp_url)
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='notifications_queue')
+    print(f"Attempting to publish message: {message}")
+    channel.basic_publish(exchange='', routing_key='hello', body=message)
+    print(f"Message: {message} published")
+    connection.close()
 
     # Open connection to RabbitMQ
-    with Connection(amqp_url) as conn:
-        queue = Queue('notifications_queue', exchange=Exchange(''), routing_key='notifications_queue')
-        queue.maybe_bind(conn)
-        queue.declare()
+    #with Connection(amqp_url) as conn:
+     #   queue = Queue('notifications_queue', exchange=Exchange(''), routing_key='notifications_queue')
+      #  queue.maybe_bind(conn)
+       # queue.declare()
 
-        producer = conn.Producer()
-        print(f"Attempting to publish message: {message}")
-        producer.publish(message, routing_key='notifications_queue', declare=[queue])
-        print(f"Message: {message} published")
+        #producer = conn.Producer()
+        #print(f"Attempting to publish message: {message}")
+        #producer.publish(message, routing_key='notifications_queue', declare=[queue])
+        #print(f"Message: {message} published")
 
 #Deserialize the message to obj:
 def otp_notification_callback(body, message):
@@ -92,17 +101,27 @@ def otp_notification_callback(body, message):
              ##      print("No messages recieved, waiting for messages..")
 
 def start_consumer():
-    conn = Connection('amqp://guest:guest@rabbitmq:5672//')  # use the correct host
-    wait_for_rabbitmq(conn)  # optional custom function to retry until ready
+    #conn = Connection('amqp://guest:guest@rabbitmq:5672//')  # use the correct host
+    #wait_for_rabbitmq(conn)  # optional custom function to retry until ready
     
-    queue = Queue('notifications_queue', exchange=Exchange(''), routing_key='notifications_queue')
-    queue.maybe_bind(conn)
-    queue.declare()
+    #queue = Queue('notifications_queue', exchange=Exchange(''), routing_key='notifications_queue')
+    #queue.maybe_bind(conn)
+   # queue.declare()
 
-    with conn.Consumer(queues=[queue], callbacks=[otp_notification_callback]):
-        print("Waiting for OTP notifications...")
-        while True:
-            try:
-                conn.drain_events(timeout=1)
-            except SocketTimeout:
-                print("No messages received, waiting for messages...")
+    #with conn.Consumer(queues=[queue], callbacks=[otp_notification_callback]):
+    #    print("Waiting for OTP notifications...")
+    #    while True:
+    #        try:
+    #            conn.drain_events(timeout=1)
+    #        except SocketTimeout:
+    #            print("No messages received, waiting for messages...")
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='hello')
+
+
+    channel.basic_consume(queue='hello', on_message_callback=otp_notification_callback, auto_ack=True)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()

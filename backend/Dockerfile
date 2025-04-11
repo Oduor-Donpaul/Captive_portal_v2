@@ -23,6 +23,10 @@ RUN chmod +x /wait-for-it.sh
 
 
 COPY requirements.txt .
+
+# Install Gunicorn
+RUN pip install gunicorn
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
