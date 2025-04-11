@@ -49,7 +49,7 @@ def publish_otp(otp, phone_number):
 
     channel.queue_declare(queue='notifications_queue')
     print(f"Attempting to publish message: {message}")
-    channel.basic_publish(exchange='', routing_key='hello', body=message)
+    channel.basic_publish(exchange='', routing_key='notifications_queue', body=message)
     print(f"Message: {message} published")
     connection.close()
 
@@ -71,7 +71,7 @@ def otp_notification_callback(body, message):
         otp = notification.get('otp')
         phone_number = notification.get('phone_number')
 
-        print(f"Recieved OTP: {otp} for phone number {phone_number}")
+        print(f"Recieved OTP: {otp} for phone number {phone_number}", flush=True)
 
         #Save the message to the database
         try:
@@ -101,27 +101,15 @@ def otp_notification_callback(body, message):
              ##      print("No messages recieved, waiting for messages..")
 
 def start_consumer():
-    #conn = Connection('amqp://guest:guest@rabbitmq:5672//')  # use the correct host
-    #wait_for_rabbitmq(conn)  # optional custom function to retry until ready
-    
-    #queue = Queue('notifications_queue', exchange=Exchange(''), routing_key='notifications_queue')
-    #queue.maybe_bind(conn)
-   # queue.declare()
 
-    #with conn.Consumer(queues=[queue], callbacks=[otp_notification_callback]):
-    #    print("Waiting for OTP notifications...")
-    #    while True:
-    #        try:
-    #            conn.drain_events(timeout=1)
-    #        except SocketTimeout:
-    #            print("No messages received, waiting for messages...")
     connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
     channel = connection.channel()
 
-    channel.queue_declare(queue='hello')
+    channel.queue_declare(queue='notifications_queue')
 
 
-    channel.basic_consume(queue='hello', on_message_callback=otp_notification_callback, auto_ack=True)
+    channel.basic_consume(queue='notifications_queue', on_message_callback=otp_notification_callback, auto_ack=True)
 
     print(' [*] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()
+    

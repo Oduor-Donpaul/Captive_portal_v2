@@ -19,7 +19,7 @@ const GuestHome = () => {
 
     const handleSignIn = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/login', {
+            const response = await axios.post('http://127.0.0.1/login', {
                 otp_code: otp,
                 phone_number: PhoneNumber
                 
@@ -43,7 +43,7 @@ const GuestHome = () => {
     const inititePayment = async (amount) => {
         
         try {
-            const response = await axios.post("http://127.0.0.1:8000/api/payment", {
+            const response = await axios.post("http://127.0.0.1/api/payment", {
                 phone_number: PhoneNumber,
                 amount: amount
             })
