@@ -1,0 +1,45 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Flask/Django specific
+*.db
+*.sqlite3
+**/migrations/*
+!**/migrations/__init__.py
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+.DS_Store
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+
+# Environment variable files
+.env
+.env.*
+
+# Build and dist folders (for Python or Node.js)
+dist/
+build/
+*.egg-info/
+
+# Node.js dependencies (for React frontend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
