@@ -19,7 +19,7 @@ const GuestHome = () => {
 
     const handleSignIn = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1/login', {
+            const response = await axios.post('http://192.168.0.26/login', {
                 otp_code: otp,
                 phone_number: PhoneNumber
                 
@@ -43,7 +43,7 @@ const GuestHome = () => {
     const inititePayment = async (amount) => {
         
         try {
-            const response = await axios.post("http://127.0.0.1/api/payment", {
+            const response = await axios.post("http://192.168.0.26/api/payment", {
                 phone_number: PhoneNumber,
                 amount: amount
             })
@@ -81,6 +81,7 @@ const GuestHome = () => {
                         <label htmlFor="phone_number">
                             Enter <b>M-Pesa</b> Phone Number:
                         </label>
+                        <br></br>
                         <input
                             name="phone_number"
                             type="tel"
@@ -104,6 +105,8 @@ const GuestHome = () => {
                         <label htmlFor="phone_number">
                             Enter <b>M-Pesa</b> Phone Number:
                         </label>
+                        <br></br>
+                        <div>
                         <input
                             name="phone_number"
                             type="tel"
@@ -115,23 +118,8 @@ const GuestHome = () => {
                                 borderRadius: '5px'
                             }}
                         />
-                        <br></br>
-                        <label htmlFor="otp">
-                            Enter a valid OTP:
-                        </label>
-                        <br></br>
-                        <input 
-                            name="otp"
-                            type="otp"
-                            value={otp}
-                            onChange={handleOtpChange}
-                            placeholder="OTP  123456"
-                            style={{
-                                marginBottom: '10px',
-                                borderRadius: '5px'
-                            }}
-                        />
-                        <br></br>
+                        </div>
+                       <br></br>
                         <Button onClick={handleSignIn} >Sign In</Button>
                     </div>)
                     }            

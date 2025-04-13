@@ -1,10 +1,9 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import './App.css';
-import { io } from 'socket.io-client';
 import OtpSearch from './pages/OtpSearch';
 import Home from './pages/Home';
-import Notifications from './pages/Notifications';
+//import Notifications from './pages/Notifications';
 import GenerateOtp from './pages/GenerateOtp';
 import GeneralNavbar from './components/GeneralNavbar';
 import GuestHome from './pages/GuestHome';
@@ -27,7 +26,7 @@ function App() {
             
               <Route path='/admin/notifications/all' element={
                 <ProtectedRoute>
-                  <Notifications />
+                  {/*<Notifications />*/}
                 </ProtectedRoute>  
                   } />
               <Route path='/admin/search' element={

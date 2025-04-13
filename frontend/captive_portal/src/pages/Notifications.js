@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
-  
+
+/*  
 var socket = io('http://127.0.0.1', {
     transports: ['websocket'],
     reconnection: true
@@ -37,3 +37,4 @@ const Notifications = () => {
 }
 
 export default Notifications;
+*/
