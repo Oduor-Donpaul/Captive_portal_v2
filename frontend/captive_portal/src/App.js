@@ -18,11 +18,11 @@ function App() {
 
   return (
     <Router>
-      <GeneralNavbar />
+      
       <div>
         
           <Routes>
-            <Route path='/admin' element={<Home />} />
+            <Route path='/waiting' element={<Home />} />
             
               <Route path='/admin/notifications/all' element={
                 <ProtectedRoute>

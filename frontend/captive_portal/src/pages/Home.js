@@ -1,7 +1,9 @@
 import React from "react";
 import logo from '../assets/images/logo.webp';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
 
     const pageStyle = {
         backgroundColor: '#C8C8C8',  // Light grayish-white color
@@ -15,10 +17,16 @@ const Home = () => {
         <div  style={pageStyle}>
             <div>
                 <h1 style={{ color: 'blue' }}><b>Welcome to Techpoint</b></h1>
-                <img src={logo} width='400vw' heigh='400vh' alt='Techpoint logo' />
+                <img src={logo} width='200x' heigh='200px' alt='Techpoint logo' />
+            </div>
+            <div>
+            <div>
+                <h2>Dear Customer this service is Temporarily unavailable. Please contact your Network administrator for assistance.</h2>
+            
+            </div>
             </div>
             <div  style={{marginTop: '20px'}} >
-                <p><b>Your One Stop for all Things Tech</b></p>
+                <p>&#xA9; 2025 Techpoint. All rights reserved.</p>
             </div>
         </div>
     )
